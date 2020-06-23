@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import { Grid, Image, Header } from 'semantic-ui-react';
 import '../../assets/css/index.css'
 

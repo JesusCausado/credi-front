@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
 
 import Home from "../pages/Home/index";
 import Register from "../pages/Register/index";
@@ -17,31 +17,37 @@ const routes = [
     component: Register,
   },
   {
-    path: '/login',
-    component: Login,
-  },
-  {
     component: PageError,
   }
 ]
 
-const Routes = () => {
-  return (
-    <Router>
-      <div >
-        <Switch>
-          {routes.map((route, i) =>
-            <Route
-              key={i}
-              exact
-              path={route.path}
-              component={route.component} />
-          )}
-        </Switch>
-      </div>
-    </Router>
+const Routes = () => (
+  <Router>
+    <Switch>
+      <Route exact path="/login" name="Login Page" component={Login} />
+      <ProtectedRoute />
+    </Switch>
+  </Router>
+)
 
-  );
-}
+const ProtectedRoute = () => {
+  const history = useHistory();
+  useEffect(() => {
+    var token = localStorage.getItem('myToken');
+    if (token == null) {
+      history.push('/login');
+    }
+  }, [])
+  return (
+    <Switch>
+      {routes.map((route, i) =>
+        <Route
+          key={i}
+          exact
+          path={route.path}
+          component={route.component} />
+      )}
+    </Switch>);
+};
 
 export default Routes

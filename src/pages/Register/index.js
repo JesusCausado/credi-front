@@ -5,8 +5,7 @@ import { useHistory } from "react-router-dom";
 import MainMenu from "../../components/MainMenu/index";
 import Footer from "../../components/Footer/index";
 
-const Register = () => { 
-
+const Register = () => {  
     return (
         <div>
             <MainMenu/> 

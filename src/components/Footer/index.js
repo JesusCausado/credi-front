@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Segment, Container, Grid, Header, List } from 'semantic-ui-react';
-import { useHistory } from "react-router-dom";
 
 const Footer = () => {
 

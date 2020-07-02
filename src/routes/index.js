@@ -37,7 +37,7 @@ const ProtectedRoute = () => {
     if (token == null) {
       history.push('/login');
     }
-  }, [])
+  }, [history])
   return (
     <Switch>
       {routes.map((route, i) =>

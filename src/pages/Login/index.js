@@ -3,9 +3,8 @@ import { Header, Segment, Grid, Form, Button, Message } from 'semantic-ui-react'
 import { useHistory } from "react-router-dom";
 import { validateEmail } from '../../utils';
 import './index.css';
-import MainMenu from "../../components/MainMenu/index";
-import Footer from "../../components/Footer/index";
 import  client  from "../../client";
+import swal from 'sweetalert';
 
 const errors = {
   email: {
@@ -44,7 +43,7 @@ const Login = () => {
   const handleClick = () => () => {  
       setLoading(true);
       setTimeout(() => {
-        getUser(); 
+        getSession(); 
       }, 3000); 
   }
 
@@ -54,21 +53,23 @@ const Login = () => {
 
   //const handleChangeEmail = (e, { value }) => setEmail(value);
 
-  async function getUser() {  
+  async function getSession() {  
     data.user = user;
     data.password = pass;  
     try {
       var response = await client('post', data, 'login');      
       if (response.status == 200) {
+        swal("Welcome!", "", "success");
         setErr(false);
         localStorage.setItem('myToken', response.data.token);
-        history.push('/');         
+        history.push('/', { user });         
       } 
     } catch (error) {
       console.log(error);
+      swal("Error!", "Usuario o contraseña inválido!", "error");
       setErr(true);
-    }
-    
+      setLoading(false);
+    }    
   }
 
   useEffect(() => {
@@ -105,8 +106,7 @@ const Login = () => {
                 <Button disabled={disabled()} type='submit' color='blue' fluid onClick={handleClick()}>Login</Button>
                 {err &&
                   <Message negative>
-                    <Message.Header>Usuario o contraseña invalida</Message.Header>
-                    <p>Error al realizar el proceso</p>
+                    <Message.Header>Usuario o contraseña invalida</Message.Header>                    
                   </Message>
                 }
               </Form>              

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Header, Segment, Grid, Form, Button, Divider, Icon } from 'semantic-ui-react';
-import { useHistory } from "react-router-dom";
 
 import MainMenu from "../../components/MainMenu/index";
 import Footer from "../../components/Footer/index";

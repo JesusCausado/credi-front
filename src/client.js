@@ -1,6 +1,6 @@
 import axios from "axios";
 var token = localStorage.getItem('myToken');
-axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
+axios.defaults.headers.common = {'authorization': `Bearer ${token}`}
 
 const client = (method, data, route) => new axios({
     method: method,

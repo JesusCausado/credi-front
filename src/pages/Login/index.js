@@ -44,7 +44,7 @@ const Login = () => {
       setLoading(true);
       setTimeout(() => {
         getSession(); 
-      }, 3000); 
+      }, 2000); 
   }
 
   const handleChangeUser = (e, { value }) => setUser(value);
@@ -62,10 +62,10 @@ const Login = () => {
         swal("Welcome!", "", "success");
         setErr(false);
         localStorage.setItem('myToken', response.data.token);
-        history.push('/', { user });         
+        history.push('/', { user });       
       } 
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
       swal("Error!", "Usuario o contraseña inválido!", "error");
       setErr(true);
       setLoading(false);

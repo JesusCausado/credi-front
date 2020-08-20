@@ -5,6 +5,8 @@ import Home from "../pages/Home/index";
 import Register from "../pages/Register/index";
 import Login from "../pages/Login/index";
 import PageError from "../components/PageError/index";
+import Cliente from "../pages/Cliente/index";
+import Prestamo from "../pages/Prestamo/index";
 
 
 const routes = [
@@ -15,6 +17,14 @@ const routes = [
   {
     path: '/register',
     component: Register,
+  },
+  {
+    path: '/cliente',
+    component: Cliente,
+  },
+  {
+    path: '/prestamo',
+    component: Prestamo,
   },
   {
     component: PageError,

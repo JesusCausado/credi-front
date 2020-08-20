@@ -10,16 +10,21 @@ const MainMenu = ( {handleClick} ) => {
     setActiveItem(item); 
     if (item === 'log out') {
       localStorage.clear();
+      if (path) history.replace(path);
     } 
     else if (item === 'home') {      
       handleClick();
     } 
-    if (path) history.push(path);              
+                  
   }
 
   useEffect(() => {
     var current = JSON.parse(localStorage.getItem('currentUser'));
-    if (current) setCurrentUser(current.user);
+    if (current) {
+      setCurrentUser(current.user);
+    } else {
+      history.replace("/login");    
+    }  
   }, [])
 
   return (

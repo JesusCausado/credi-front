@@ -62,7 +62,8 @@ const Login = () => {
         swal("Welcome!", "", "success");
         setErr(false);
         localStorage.setItem('myToken', response.data.token);
-        history.push('/', { user });       
+        console.log(response.data.token);        
+        history.replace('/', { user });       
       } 
     } catch (error) {
       console.log(error.response);
@@ -74,6 +75,10 @@ const Login = () => {
 
   useEffect(() => {
     setLoading(false);
+    /*var current = localStorage.getItem('currentUser');
+    if (!current) {      
+      history.replace('/', { user });     
+    }*/
   }, [])
 
   return (

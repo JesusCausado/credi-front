@@ -27,6 +27,10 @@ const routes = [
     component: Prestamo,
   },
   {
+    path: '/usuario',
+    component: Prestamo,
+  },
+  {
     component: PageError,
   }
 ]

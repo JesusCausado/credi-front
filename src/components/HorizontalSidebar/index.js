@@ -28,17 +28,17 @@ const SubSidebar = ( idMenu ) => {
       try {
         if (history) data.menu = idMenu.idMenu; 
         var current = JSON.parse(localStorage.getItem('currentUser'));   
-        data.typeUser = current._idTypeUser;  
-        const response = await client('post', data, 'options');         
+        data.typeUser = current.idTypeUser._id;  
+        const response = await client('post', data, 'options');        
         if (response.status === 200) {
           const dat = response.data.option;
           const dataOption = [];
           for (let index = 0; index < dat.length; index++) {
             const menu = dat[index];           
-            if (menu._idOption != null) {
+            if (menu.idOption != null) {
               dataOption.push({
-                systemName: menu._idOption.systemName,
-                route: menu._idOption.route
+                systemName: menu.idOption.systemName,
+                route: menu.idOption.route
               });
             }
           };
@@ -77,8 +77,6 @@ const HorizontalSidebar = ({ animation, direction, visible }) => {
   useEffect(() => {
     const getMenu = async () => {
       try {
-        var token = localStorage.getItem('myToken');
-        console.log(token);
         const response = await client('post', null, 'menus');
         if (response.status === 200) {
           const data = response.data.menus;

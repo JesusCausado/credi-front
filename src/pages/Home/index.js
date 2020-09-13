@@ -27,25 +27,26 @@ const Home = ( user ) => {
     }   
   }
 
-  async function getUser() {    
-    if (history) data.username = user.location.state.user; 
-    //if (history) data.username = 'jcausado1'; 
-    try {
-      var response = await client('post', data, 'user');      
-      if (response.status === 200) {
-        localStorage.setItem('currentUser', JSON.stringify(response.data.user));   
-      } 
-    } catch (error) {
-      console.log(error.response);
-      if (error.response.status === 401) {
-        localStorage.clear();
-        history.replace('/login');
-      }     
-    }    
-  }
-
   useEffect(() => {
-    var current = localStorage.getItem('currentUser');
+    const getUser = async () => {    
+      if (history) data.username = user.location.state.user; 
+      console.log(history);
+      //if (history) data.username = 'jcausado1'; 
+      try {
+        var response = await client('post', data, 'user');      
+        console.log(response.data.user);
+        if (response.status === 200) {
+          localStorage.setItem('currentUser', JSON.stringify(response.data.user));   
+        } 
+      } catch (error) {
+        console.log(error.response);
+        if (error.response.status === 401) {
+          localStorage.clear();
+          history.replace('/login');
+        }     
+      }    
+    }
+    var current = JSON.parse(localStorage.getItem('currentUser'));
     if (!current) {      
       getUser();
     }    

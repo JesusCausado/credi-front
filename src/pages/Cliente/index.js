@@ -18,28 +18,27 @@ import HorizontalSidebar from "../../components/HorizontalSidebar/index";
 import MainMenu from "../../components/MainMenu/index";
 import swal from 'sweetalert';
 
-
-const panes = [
-  {
-    menuItem: 'Crear  Cliente',
-    render: () => <Tab.Pane attached={false}> <CrearCliente/> </Tab.Pane>,
-  },
-  {
-    menuItem: 'Listado de Clientes',
-    render: () => <Tab.Pane attached={false}> <ListarCliente/> </Tab.Pane>,
-  },
-]
-
 const TabCliente = () => {
-  //const history = useHistory();
-  const [visible, setVisible] = useState(true);  
+  const [visible, setVisible] = useState(true); 
+  const history = useHistory();
+  const panes = [
+    {
+      menuItem: 'Crear  Cliente',
+      render: () => <Tab.Pane attached={false}> <CrearCliente/> </Tab.Pane>,
+    },
+    {
+      menuItem: 'Listado de Clientes',
+      render: () => <Tab.Pane attached={false}> <ListarCliente /*getClients = {getClients()} clients = {clients} *//> </Tab.Pane>,
+    },
+  ]
   const handleClick = () => {   
     if (visible) {
       setVisible(false);
     }else{
       setVisible(true);
     }   
-  }
+  }  
+
   return (
   <div id="home">   
       <MainMenu handleClick = {handleClick}/>  
@@ -305,7 +304,7 @@ const CrearCliente = () => {
   );
 }
 
-const ListarCliente = () => { 
+const ListarCliente = ( /*{getClients, {clients}*/ ) => {
   const [clients, setClients] = useState([]); 
   const [open, setOpen] = useState(false); 
   const history = useHistory();
@@ -323,6 +322,24 @@ const ListarCliente = () => {
   const [fechaNac, setFechaNac] = useState('');   
   const [estadoCivil, setEstadoCivil] = useState('');   
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getClients = async () => {
+      try {
+        var response = await client('post', '', 'clients');   
+        if (response.status === 200) {
+          setClients(response.data.client);
+        } 
+      } catch (error) {
+        console.log(error.response);
+        if (error.response.status === 401) {
+          localStorage.clear();
+          history.replace('/login');   
+        }      
+      }    
+    };   
+    getClients();   
+  }, [])
 
   /*const data = {
     lastName: '',
@@ -423,30 +440,11 @@ const ListarCliente = () => {
   const hCFechaNac = (e, { value }) => setFechaNac(value); 
   const hCEstadoCivil = (e, { value }) => setEstadoCivil(value); 
 
-  const cleanFields = () => {
-      document.getElementById("create-client-form").reset();
-  }
-
   const handleSubmit = () => {
     setLoading(true);
       setTimeout(() => {
-        //setCliente();
+        setClients();
       }, 2000);            
-  }
-
-  async function getClients() {
-    try {
-      var response = await client('post', '', 'clients');   
-      if (response.status === 200) {
-        setClients(response.data.client);
-      } 
-    } catch (error) {
-      console.log(error.response);
-      if (error.response.status === 401) {
-        localStorage.clear();
-        history.replace('/login');   
-      }      
-    }    
   }
  
   async function deleteClient(clt) {    
@@ -455,7 +453,7 @@ const ListarCliente = () => {
       var response = await client('delete', data, 'client');  
       if (response.status === 200) {
         swal("Cliente eliminado correctamente!", "", "success");
-        getClients();  
+        //getClients();  
       }
     } catch (error) {
       console.log(error.response);
@@ -466,10 +464,6 @@ const ListarCliente = () => {
       swal("Error!", "Al eliminar el cliente!", "error");  
     }    
   }
-
-  useEffect(() => {     
-      getClients();   
-  }, [])
 
   const handleClickEdit = () => () => {
     console.log('handleClickEdit');  

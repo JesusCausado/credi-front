@@ -7,7 +7,8 @@ import {
   Form,
   Table,
   Tab,
-  Icon
+  Divider,
+  Header
 } from 'semantic-ui-react';
 
 import {
@@ -17,6 +18,7 @@ import client from "../../client";
 import HorizontalSidebar from "../../components/HorizontalSidebar/index";
 import MainMenu from "../../components/MainMenu/index";
 import swal from 'sweetalert';
+import styles from './prestamo.css'
 
 
 const panes = [
@@ -26,7 +28,7 @@ const panes = [
   },
   {
     menuItem: 'Listado de Prestamos',
-    render: () => <Tab.Pane attached={false}> <ListarCliente /> </Tab.Pane>,
+    render: () => <Tab.Pane attached={false}> <ListarPrestamos /> </Tab.Pane>,
   },
 ]
 
@@ -73,6 +75,8 @@ const CrearPrestamo = () => {
   const history = useHistory();
   const data = {
     idClient: '',
+    idUsuario: '',
+    tipoPrestamo: '',
     ciudad: '',
     valorSol: '',
     valorApr: '',
@@ -81,26 +85,21 @@ const CrearPrestamo = () => {
     diaPago: '',
   }
 
-  const dbTipoPrest = [
+  const dbTipoPrest = [    
     {
       key: '1',
-      text: 'Tipos de Prestamos',
+      text: 'Cuota Fija',
       value: '1',
     },
     {
       key: '2',
-      text: 'Cuota Fija',
+      text: 'Interes bajo saldo',
       value: '2',
     },
     {
       key: '3',
-      text: 'Interes bajo saldo',
-      value: '3',
-    },
-    {
-      key: '4',
       text: 'Avance',
-      value: '4',
+      value: '3',
     }
   ]
 
@@ -136,8 +135,11 @@ const CrearPrestamo = () => {
 
   async function setPrestamo() {
     try {
+      var current = JSON.parse(localStorage.getItem('currentUser'));   
       data.idClient = idClient;
+      data.idUsuario = current._id;
       data.ciudad = ciudad;
+      data.tipoPrestamo = tipoPrestamo;
       data.valorSol = valorSol;
       data.valorApr = valorApr;
       data.termino = termino;
@@ -261,7 +263,7 @@ const CrearPrestamo = () => {
               name='tipoPrestamo'
               label='Tipo Prestamo'
               type='text'
-              placeholder='TIPO'
+              placeholder='Tipo'
               fluid
               selection
               search
@@ -276,8 +278,9 @@ const CrearPrestamo = () => {
   );
 }
 
-const ListarCliente = () => {
+const ListarPrestamos = () => {
   const [prestamos, setPrestamos] = useState([]);
+  const [prestamosDet, setPrestamosDet] = useState([]);
   const history = useHistory();
   const data = {
     id: '',
@@ -285,7 +288,6 @@ const ListarCliente = () => {
   async function getPrestamos() {
     try {
       var response = await client('post', '', 'prestamos');
-      console.log(response);
       if (response.status === 200) {
         setPrestamos(response.data.prestamo);
       }
@@ -298,9 +300,26 @@ const ListarCliente = () => {
     }
   }
 
+  async function getPrestamosDet(prt) {
+    try {
+      data.id = prt["_id"];
+      var response = await client('post', data, 'prestamos-det');
+      console.log(response);
+      if (response.status === 200) {
+        setPrestamosDet(response.data.prestamoDet);
+      }
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        localStorage.clear();
+        history.replace('/login');   
+      }
+    }
+  }
+
   async function deletePretsamo(prt) {
     try {
-      data.id = prt["_id"]
+      data.id = prt["_id"];
       var response = await client('delete', data, 'prestamo');
       if (response.status === 200) {
         swal("Cliente eliminado correctamente!", "", "success");
@@ -328,40 +347,78 @@ const ListarCliente = () => {
     deletePretsamo(prt);
   };
 
-  return (
-    <div id="cliente">
-      <Segment basic style={{ padding: '4em 4em 4em 4em', height: '40em' }}>
-        <Table celled attached='top' basic>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell width={1}>Prestamo</Table.HeaderCell>
-              <Table.HeaderCell width={1}>Interes</Table.HeaderCell>
-              <Table.HeaderCell width={4}>Valor Solicitado</Table.HeaderCell>
-              <Table.HeaderCell width={4}>Valor Aprobado</Table.HeaderCell>
-              <Table.HeaderCell width={4}>Valor Entregado</Table.HeaderCell>
-              <Table.HeaderCell width={2}>Termino</Table.HeaderCell>
-              <Table.HeaderCell width={2}>Fecha Grabación</Table.HeaderCell>
-              <Table.HeaderCell width={1}></Table.HeaderCell>
-              <Table.HeaderCell width={1}></Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
+  const handleClickDetail = (prt) => () => {
+    getPrestamosDet(prt);
+  };
 
-          <Table.Body>
-            {prestamos.map((prestamo, i) =>
-              <Table.Row key={i}>
-                <Table.Cell>{prestamo.nroPrestamo}</Table.Cell>
-                <Table.Cell>{prestamo.interes} % </Table.Cell>
-                <Table.Cell>{prestamo.vlrSol}</Table.Cell>
-                <Table.Cell>{prestamo.vlrApr}</Table.Cell>
-                <Table.Cell>{prestamo.vlrEnt}</Table.Cell>
-                <Table.Cell>{prestamo.termino}</Table.Cell>
-                <Table.Cell>{prestamo.fechaGrab}</Table.Cell>
-                <Table.Cell><Button type='submit' onClick={handleClickEdit} icon='edit' color='teal'></Button></Table.Cell>
-                <Table.Cell><Button type='submit' onClick={handleClickDelete(prestamo)} icon='delete' color='red'></Button></Table.Cell>
+  return (
+    <div id="prestamo">
+      <Segment basic style={{ padding: '2em 4em 4em 4em', minHeight: '48em' }}>        
+        <div id="encabezado">
+          <Header as='h4'>Encabezado</Header>
+          <Table celled selectable striped color="blue">
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell width={1}>Prestamo</Table.HeaderCell>
+                <Table.HeaderCell width={1}>Tipo Prestamo</Table.HeaderCell>
+                <Table.HeaderCell width={1}>Interes</Table.HeaderCell>
+                <Table.HeaderCell width={4}>Valor Solicitado</Table.HeaderCell>
+                <Table.HeaderCell width={4}>Valor Aprobado</Table.HeaderCell>
+                <Table.HeaderCell width={4}>Valor Entregado</Table.HeaderCell>
+                <Table.HeaderCell width={2}>Termino</Table.HeaderCell>
+                <Table.HeaderCell width={2}>Fecha Grabación</Table.HeaderCell>
+                <Table.HeaderCell width={1}></Table.HeaderCell>
+                <Table.HeaderCell width={1}></Table.HeaderCell>
+                <Table.HeaderCell width={1}></Table.HeaderCell>
               </Table.Row>
-            )}
-          </Table.Body>
-        </Table>
+            </Table.Header>
+            <Table.Body>
+              {prestamos.map((prestamo, i) =>
+                <Table.Row key={i}>
+                  <Table.Cell>{prestamo.nroPrestamo}</Table.Cell>
+                  <Table.Cell>{prestamo.tipoPrestamo}</Table.Cell>
+                  <Table.Cell>{prestamo.interes} % </Table.Cell>
+                  <Table.Cell>{prestamo.vlrSol}</Table.Cell>
+                  <Table.Cell>{prestamo.vlrApr}</Table.Cell>
+                  <Table.Cell>{prestamo.vlrEnt}</Table.Cell>
+                  <Table.Cell>{prestamo.termino}</Table.Cell>
+                  <Table.Cell>{prestamo.fechaGrab}</Table.Cell>
+                  <Table.Cell><Button type='submit' onClick={handleClickEdit} icon='edit' color='teal'></Button></Table.Cell>
+                  <Table.Cell><Button type='submit' onClick={handleClickDelete(prestamo)} icon='delete' color='red'></Button></Table.Cell>
+                  <Table.Cell><Button type='submit' onClick={handleClickDetail(prestamo)} icon='plus' color='green'></Button></Table.Cell>
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
+        </div>
+        <Divider />
+        <div id="detalle" className={styles.test}>
+          <Header as='h4'>Detalle</Header>
+          <Table celled selectable striped color="blue" collapsing>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell width={1}>Cuota</Table.HeaderCell>
+                <Table.HeaderCell width={1}>Estado</Table.HeaderCell>
+                <Table.HeaderCell width={4}>Fecha de pago</Table.HeaderCell>
+                <Table.HeaderCell width={4}>Aporte a capital</Table.HeaderCell>
+                <Table.HeaderCell width={4}>Aporte a interes</Table.HeaderCell>
+                <Table.HeaderCell width={2}>Valor cuota</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {prestamosDet && prestamosDet.map((prestamoDet, i) =>
+                <Table.Row key={i}>
+                  <Table.Cell>{prestamoDet.nroCuota}</Table.Cell>
+                  <Table.Cell>{prestamoDet.estado}</Table.Cell>
+                  <Table.Cell>{prestamoDet.fechaPago}</Table.Cell>
+                  <Table.Cell>{prestamoDet.aptCapital}</Table.Cell>
+                  <Table.Cell>{prestamoDet.aptInteres}</Table.Cell>
+                  <Table.Cell>{prestamoDet.vlrCuota}</Table.Cell>
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
+        </div>            
       </Segment>
     </div>
   );

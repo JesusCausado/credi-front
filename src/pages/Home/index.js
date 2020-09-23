@@ -26,26 +26,27 @@ const Home = ( user ) => {
       setVisible(true);
     }   
   }
+  
+  const getUser = async () => {    
+    if (history) data.username = user.location.state.user; 
+    console.log(history);
+    //if (history) data.username = 'jcausado1'; 
+    try {
+      var response = await client('post', data, 'user');      
+      console.log(response.data.user);
+      if (response.status === 200) {
+        localStorage.setItem('currentUser', JSON.stringify(response.data.user));   
+      } 
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        localStorage.clear();
+        history.replace('/login');
+      }     
+    }    
+  }
 
-  useEffect(() => {
-    const getUser = async () => {    
-      if (history) data.username = user.location.state.user; 
-      console.log(history);
-      //if (history) data.username = 'jcausado1'; 
-      try {
-        var response = await client('post', data, 'user');      
-        console.log(response.data.user);
-        if (response.status === 200) {
-          localStorage.setItem('currentUser', JSON.stringify(response.data.user));   
-        } 
-      } catch (error) {
-        console.log(error.response);
-        if (error.response.status === 401) {
-          localStorage.clear();
-          history.replace('/login');
-        }     
-      }    
-    }
+  useEffect(() => {    
     var current = JSON.parse(localStorage.getItem('currentUser'));
     if (!current) {      
       getUser();
@@ -53,9 +54,9 @@ const Home = ( user ) => {
   }, [])
 
   return (
-    <div id="home">   
+    <div id="home" className="Button">   
       <MainMenu handleClick = {handleClick}/>
-      <div id="sidebar" style={{height: '58em'}}>                       
+      <div id="sidebar" style={{height: '60em'}}>                       
         <Sidebar.Pushable as={Segment} style={{ border: '0px' }}>
           <HorizontalSidebar
             animation='slide along'

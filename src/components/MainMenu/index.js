@@ -29,7 +29,7 @@ const MainMenu = ( {handleClick} ) => {
 
   return (
     <div id="menu">       
-      <Menu size='small' stackable borderless fluid={true} inverted style={{ height: '4em', padding: '0em 7em 0em 7em', margin: '0em 0em', backgroundColor: '#124678'}}>        
+      <Menu size='small' stackable borderless fluid={true} inverted style={{ padding: '0em 7em 0em 7em', margin: '0em 0em', backgroundColor: '#124678'}}>        
           <Menu.Item
             name='home'
             active={activeItem === 'home'}

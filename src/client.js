@@ -1,7 +1,7 @@
 import axios from "axios";
 var token = localStorage.getItem('myToken');
 if (!token) {
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5vcmUxIiwiaWF0IjoxNTk5OTU5ODA2LCJleHAiOjE2MDAwNDYyMDZ9.8eEBkHHW2Zo6p7oj7htMf7typQDuih9aCVTmqcsPY48";
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5vcmUxIiwiaWF0IjoxNjAwMzk3NDE4LCJleHAiOjE2MDIxMjU0MTh9.1KssdKvar2VFbXeVhAWK94OavTUaL78Xpymb7_sJcuY";
 }
 axios.defaults.headers.common = {'authorization': `Bearer ${token}`}
 

@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Header, Segment, Grid, Form, Button, Message } from 'semantic-ui-react';
+import { 
+  Header, 
+  Segment, 
+  Grid, 
+  Form, 
+  Button, 
+  Message,
+  Image
+ } from 'semantic-ui-react';
 import { useHistory } from "react-router-dom";
 import { validateEmail } from '../../utils';
 import './index.css';
@@ -83,42 +91,44 @@ const Login = () => {
 
   return (
     <div >
-      <Segment style={{ backgroundColor: '#FFFFFF', margin: '6em 35em 6em 35em', padding: '2em 0em 2em 0em', height: '30em', widh: '100em' }} vertical raised>
-        <Grid container stackable verticalAlign='middle' columns={3}>
-          <Grid.Row centered style={{ padding: '2em 2em' }}>
-            <Header as='h2'> Log in to your account </Header>
-          </Grid.Row>
-          <Grid.Row centered >
-            <Grid.Column width={8}>
-              <Form loading={loading}>
-                {/*<Form.Input
-                  name='email'
-                  label='Email'
-                  type='email'
-                  onChange={handleChangeEmail}
-                  placeholder='example@corre.com'
-                  error={email.length && !validateEmail(email) ? errors.email : null} />*/}
-                <Form.Input name='user' 
-                  label='User' 
-                  placeholder='User' 
-                  type='text' 
-                  onChange={handleChangeUser} />  
-                <Form.Input name='password' 
-                  label='Password' 
-                  placeholder='Password' 
-                  type='password' 
-                  onChange={handleChangePass} />
-                <Button disabled={disabled()} type='submit' color='blue' fluid onClick={handleClick()}>Login</Button>
-                {err &&
-                  <Message negative>
-                    <Message.Header>Usuario o contraseña invalida</Message.Header>                    
-                  </Message>
-                }
+      <Grid verticalAlign='middle' columns={3} centered stackable>  
+          <Grid.Row style={{padding: "10em 0em 0em 0em"}}>
+            <Header as='h2' color='blue' >
+              <Image circular src='https://react.semantic-ui.com/images/avatar/large/patrick.png'/> Log-in to your account 
+            </Header>  
+          </Grid.Row>       
+          <Grid.Row style={{padding: "0em 2em 2em 2em"}}>
+            <Grid.Column>                                     
+              <Form loading={loading}>               
+                <Segment style={{ backgroundColor: '#FFFFFF', padding: "2em 2em 2em 2em"}} vertical raised>
+                  {/*<Form.Input
+                    name='email'
+                    label='Email'
+                    type='email'
+                    onChange={handleChangeEmail}
+                    placeholder='example@corre.com'
+                    error={email.length && !validateEmail(email) ? errors.email : null} />*/}
+                  <Form.Input name='user' 
+                    label='User' 
+                    placeholder='User' 
+                    type='text' 
+                    onChange={handleChangeUser} />  
+                  <Form.Input name='password' 
+                    label='Password' 
+                    placeholder='Password' 
+                    type='password' 
+                    onChange={handleChangePass} />
+                  <Button disabled={disabled()} type='submit' color='blue' fluid onClick={handleClick()}>Login</Button>
+                  {err &&
+                    <Message negative>
+                      <Message.Header>Usuario o contraseña invalida</Message.Header>                    
+                    </Message>
+                  }
+                  </Segment>
               </Form>              
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </Segment>
     </div>
   );
 }

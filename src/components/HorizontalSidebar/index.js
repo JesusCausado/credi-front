@@ -3,10 +3,12 @@ import {
   Accordion,
   Menu,
   Sidebar,
-  Label,
+  Input,
   Form
 } from 'semantic-ui-react';
 import { useHistory } from "react-router-dom";
+//CSS
+import '../../components/HorizontalSidebar/index.css';
 
 import client from "../../client";
 
@@ -57,7 +59,7 @@ const SubSidebar = ( idMenu ) => {
   
   return (
     <div>
-      <Menu fluid pointing secondary vertical inverted style={{ padding: '1em 0em 1em 0em', backgroundColor: '#283C50' }}>  
+      <Menu fluid secondary vertical inverted style={{ backgroundColor: '#283C50' }}>  
         {options && options.map((option, i) =>
           <Menu.Item
             key={i}
@@ -85,7 +87,11 @@ const HorizontalSidebar = ({ animation, direction, visible }) => {
             const menu = data[index];
             dataMenu.push({
               key: menu._id,
-              title: menu.name,
+              //title: menu.name,
+              title: {
+                content: menu.name,
+                icon: 'folder outline',
+              },
               content: { content: <SubSidebar idMenu = {menu._id}/> }
             });
           };
@@ -110,12 +116,14 @@ const HorizontalSidebar = ({ animation, direction, visible }) => {
       vertical
       visible={visible}
       width='thin'
-      color='blue'
       inverted
-      style={{ padding: '2em 0em 2em 0em', backgroundColor: '#283C50' }}
+      style={{ backgroundColor: '#283C50' }}
     >
-      {<Accordion /*defaultActiveIndex={0}*/ panels={menus} fluid inverted />}
-    </Sidebar>
+    <Menu.Item>
+          <Input icon='search' placeholder='Buscar...' />
+        </Menu.Item>
+      {<Accordion /*defaultActiveIndex={0}*/ panels={menus} fluid inverted styled style={{ padding: '2em 0em 1em 1em', backgroundColor: '#283C50' }}/>}
+    </Sidebar> 
   );
 }
 

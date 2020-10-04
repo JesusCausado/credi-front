@@ -17,6 +17,8 @@ import  client  from "../../client";
 import HorizontalSidebar from "../../components/HorizontalSidebar/index";
 import MainMenu from "../../components/MainMenu/index";
 import swal from 'sweetalert';
+//CSS
+import '../../components/HorizontalSidebar/index.css';
 
 const TabCliente = () => {
   const [visible, setVisible] = useState(true); 
@@ -40,22 +42,23 @@ const TabCliente = () => {
   }  
 
   return (
-  <div id="home">   
-      <MainMenu handleClick = {handleClick}/>  
-      <div id="sidebar" style={{height: '58em'}}>                       
-        <Sidebar.Pushable as={Segment} style={{ border: '0px' }}>
-          <HorizontalSidebar
-            animation='slide along'
-            direction='left'
-            visible={visible}
-          />  
-                     
-          <Sidebar.Pusher style={{padding: '2em 15em 2em 2em'}}>            
+    <div id="home">   
+    <MainMenu handleClick = {handleClick}/>
+    <div id="sidebar" className="sidebar">       
+      <Sidebar.Pushable as={Segment} style={{border: '0px', borderRadius: 'unset', overflow: 'hidden'}}>
+        <HorizontalSidebar
+          animation='slide along'
+          direction='left'
+          visible={visible}
+        />   
+        <Sidebar.Pusher>
+          <Segment basic style={{ padding: '2em 15em 2em 2em'}}>
             <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
-      </div>
-    </div> 
+          </Segment>
+        </Sidebar.Pusher>
+      </Sidebar.Pushable>
+    </div>
+  </div>
   );
 }
 

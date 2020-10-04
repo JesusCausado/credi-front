@@ -7,6 +7,7 @@ import Login from "../pages/Login/index";
 import PageError from "../components/PageError/index";
 import Cliente from "../pages/Cliente/index";
 import Prestamo from "../pages/Prestamo/index";
+import RepCliente from "../pages/RepCliente/index";
 
 
 const routes = [
@@ -29,6 +30,10 @@ const routes = [
   {
     path: '/usuario',
     component: Prestamo,
+  },
+  {
+    path: '/repCliente',
+    component: RepCliente,
   },
   {
     component: PageError,

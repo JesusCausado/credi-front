@@ -3,6 +3,9 @@ import {
   Image,
   Segment,
   Sidebar,
+  Header,
+  Icon,
+  Button
 } from 'semantic-ui-react';
 
 import {
@@ -11,6 +14,8 @@ import {
 import  client  from "../../client";
 import HorizontalSidebar from "../../components/HorizontalSidebar/index";
 import MainMenu from "../../components/MainMenu/index";
+//CSS
+import '../../components/HorizontalSidebar/index.css';
 
 
 const Home = ( user ) => {   
@@ -54,18 +59,17 @@ const Home = ( user ) => {
   }, [])
 
   return (
-    <div id="home" className="Button">   
+    <div id="home">   
       <MainMenu handleClick = {handleClick}/>
-      <div id="sidebar" style={{height: '60em'}}>                       
-        <Sidebar.Pushable as={Segment} style={{ border: '0px' }}>
+      <div id="sidebar" className="sidebar">       
+        <Sidebar.Pushable as={Segment} style={{border: '0px', borderRadius: 'unset', overflow: 'hidden'}}>
           <HorizontalSidebar
             animation='slide along'
             direction='left'
             visible={visible}
-          /> 
-                     
-          <Sidebar.Pusher style={{padding: '2em 15em 2em 2em'}}>
-            <Segment basic style={{padding: '8em 0em 2em 0em'}}>
+          />   
+          <Sidebar.Pusher>
+            <Segment basic style={{ padding: '10em 15em 2em 2em'}}>
               <Image src='https://www.ealde.es/wp-content/uploads/2018/04/gestion-de-riesgos-credito-comercial.jpg' size='big' rounded centered />
             </Segment>
           </Sidebar.Pusher>

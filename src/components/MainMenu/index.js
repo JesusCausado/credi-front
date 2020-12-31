@@ -22,7 +22,7 @@ const MainMenu = ( {handleClick} ) => {
 
   useEffect(() => {
     var current = JSON.parse(localStorage.getItem('currentUser'));
-    if (current) {
+    if (current != null) {
       setCurrentUser(current.user);
     } else {
       history.replace("/login");    

@@ -25,35 +25,36 @@ const SubSidebar = ( idMenu ) => {
     history.replace(route);
   }
 
-  useEffect(() => {    
-    const getOptions = async () => {
-      try {
-        if (history) data.menu = idMenu.idMenu; 
-        var current = JSON.parse(localStorage.getItem('currentUser'));   
-        data.typeUser = current.idTypeUser._id;  
-        const response = await client('post', data, 'options');        
-        if (response.status === 200) {
-          const dat = response.data.option;
-          const dataOption = [];
-          for (let index = 0; index < dat.length; index++) {
-            const menu = dat[index];           
-            if (menu.idOption != null) {
-              dataOption.push({
-                systemName: menu.idOption.systemName,
-                route: menu.idOption.route
-              });
-            }
-          };
-          setOptions(dataOption);
-        }
-      } catch (error) {
-        console.log(error.response);
-        if (error.response.status === 401) {
-          localStorage.clear();
-          history.replace('/login');   
-        }
+  const getOptions = async () => {
+    try {
+      if (history) data.menu = idMenu.idMenu; 
+      var current = JSON.parse(localStorage.getItem('currentUser'));   
+      data.typeUser = current.idTypeUser._id;  
+      const response = await client('post', data, 'options');        
+      if (response.status === 200) {
+        const dat = response.data.option;
+        const dataOption = [];
+        for (let index = 0; index < dat.length; index++) {
+          const menu = dat[index];           
+          if (menu.idOption != null) {
+            dataOption.push({
+              systemName: menu.idOption.systemName,
+              route: menu.idOption.route
+            });
+          }
+        };
+        setOptions(dataOption);
       }
-    };
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        localStorage.clear();
+        history.replace('/login');   
+      }
+    }
+  };
+
+  useEffect(() => {
     getOptions();
   }, [])
   
@@ -75,8 +76,7 @@ const SubSidebar = ( idMenu ) => {
 const HorizontalSidebar = ({ animation, direction, visible }) => {
   const [menus, setMenus] = useState([]);
   const history = useHistory();
-
-  useEffect(() => {
+  useEffect(() => { 
     const getMenu = async () => {
       try {
         const response = await client('post', null, 'menus');

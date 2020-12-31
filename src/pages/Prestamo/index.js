@@ -739,8 +739,9 @@ class ReportPrestamoTotal extends React.Component {
   }
 
   render() {
-    return (
+    return (      
       <Segment style={{ padding: '1em 1em 1em 1em' }} vertical>
+      <div id="print">
         <Grid container stackable verticalAlign='middle' columns={2}>
           <Grid.Row>
             <Grid.Column width={12}>
@@ -781,8 +782,8 @@ class ReportPrestamoTotal extends React.Component {
           <Grid.Row>
             <Grid.Column width={16}>
               <Header as='h4' block> TERMINOS Y CONDICIONES DEL CREDITO APROBADO POR {this.state.prestamo.vlrApr} </Header>
-              <Table style={{pageBreakInside: 'avoid', pageBreakAfter: 'auto'}}>
-                <Table.Header>
+              <Table>  
+              <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell width={2}>Cuota</Table.HeaderCell>
                     <Table.HeaderCell width={2}>Estado</Table.HeaderCell>
@@ -794,7 +795,9 @@ class ReportPrestamoTotal extends React.Component {
                     <Table.HeaderCell width={3}>Entregado a cliente</Table.HeaderCell>
                     <Table.HeaderCell width={3}>Saldo</Table.HeaderCell>
                   </Table.Row>
-                </Table.Header>
+              </Table.Header>
+              </Table>
+              <Table>                
                 <Table.Body>
                   {this.state.prestamoDet && this.state.prestamoDet.map((prestamoDet, i) =>
                     <Table.Row key={i}>
@@ -814,7 +817,9 @@ class ReportPrestamoTotal extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        </div>
       </Segment>
+      
     );
   }
 }

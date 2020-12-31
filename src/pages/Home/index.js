@@ -32,11 +32,11 @@ const Home = ( user ) => {
     }   
   }
   
-  const getUser = async () => {    
-    if (history) data.username = user.location.state.user; 
-    console.log(history);
-    //if (history) data.username = 'jcausado1'; 
+  const getUser = async () => { 
     try {
+      var token = localStorage.getItem('myToken');
+      if (history != null) data.username = user.location.state.user;
+      //if (history) data.username = 'jcausado1'; 
       var response = await client('post', data, 'user');      
       console.log(response.data.user);
       if (response.status === 200) {
@@ -48,14 +48,14 @@ const Home = ( user ) => {
         localStorage.clear();
         history.replace('/login');
       }     
-    }    
+    }       
   }
 
-  useEffect(() => {    
+  useEffect(() => {  
     var current = JSON.parse(localStorage.getItem('currentUser'));
-    if (!current) {      
-      getUser();
-    }    
+    if (!current) {
+      getUser();     
+    } 
   }, [])
 
   return (

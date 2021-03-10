@@ -24,43 +24,10 @@ const Home = ( user ) => {
   const data = {
     username: ''
   }
-  const handleClick = () => {   
-    if (visible) {
-      setVisible(false);
-    }else{
-      setVisible(true);
-    }   
-  }
   
-  const getUser = async () => { 
-    try {
-      var token = localStorage.getItem('myToken');
-      if (history != null) data.username = user.location.state.user;
-      //if (history) data.username = 'jcausado1'; 
-      var response = await client('post', data, 'user');      
-      console.log(response.data.user);
-      if (response.status === 200) {
-        localStorage.setItem('currentUser', JSON.stringify(response.data.user));   
-      } 
-    } catch (error) {
-      console.log(error.response);
-      if (error.response.status === 401) {
-        localStorage.clear();
-        history.replace('/login');
-      }     
-    }       
-  }
-
-  useEffect(() => {  
-    var current = JSON.parse(localStorage.getItem('currentUser'));
-    if (!current) {
-      getUser();     
-    } 
-  }, [])
-
   return (
     <div id="home">   
-      <MainMenu handleClick = {handleClick}/>
+      <MainMenu handleClick = { () => setVisible(!visible) }/>
       <div id="sidebar" className="sidebar">       
         <Sidebar.Pushable as={Segment} style={{border: '0px', borderRadius: 'unset', overflow: 'hidden'}}>
           <HorizontalSidebar

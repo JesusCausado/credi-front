@@ -40,17 +40,10 @@ const panes = [
 ]
 
 const TabPrestamo = () => {
-  const [visible, setVisible] = useState(true);
-  const handleClick = () => {
-    if (visible) {
-      setVisible(false);
-    } else {
-      setVisible(true);
-    }
-  }
+  const [visible, setVisible] = useState(true);  
   return (
     <div id="home">   
-      <MainMenu handleClick = {handleClick}/>
+      <MainMenu handleClick = { () => setVisible(!visible) } />
       <div id="sidebar" className="sidebar">       
         <Sidebar.Pushable as={Segment} style={{border: '0px', borderRadius: 'unset', overflow: 'hidden'}}>
           <HorizontalSidebar

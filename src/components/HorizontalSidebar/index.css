@@ -1,4 +1,4 @@
 .sidebar{    
-  height: 95vh;
-  overflow-y: auto;
+  height: 100vh;
+  /*overflow-y: auto;*/
 }

@@ -20,15 +20,6 @@ const MainMenu = ( {handleClick} ) => {
                   
   }
 
-  useEffect(() => {
-    var current = JSON.parse(localStorage.getItem('currentUser'));
-    if (current != null) {
-      setCurrentUser(current.user);
-    } else {
-      history.replace("/login");    
-    }  
-  }, [])
-
   return (
     <div id="menu" className="container_menu">       
       <Menu size='small' fluid inverted style={{ padding: '0em 7em 0em 89px',  backgroundColor: '#176479', borderRadius: 'unset'}}>        

@@ -70,8 +70,7 @@ const Login = () => {
         swal("Welcome!", "", "success");
         setErr(false);
         localStorage.setItem('myToken', response.data.token);
-        console.log(response.data.token);        
-        history.replace('/', { user });       
+        getUser();
       } 
     } catch (error) {
       console.log(error.response);
@@ -79,6 +78,24 @@ const Login = () => {
       setErr(true);
       setLoading(false);
     }    
+  }
+
+  const getUser = async () => { 
+    try {
+      data.username = user;
+      var response = await client('post', data, 'user');      
+      console.log(response.data.user);
+      if (response.status === 200) {
+        localStorage.setItem('currentUser', JSON.stringify(response.data.user));  
+        history.replace('/', { user });       
+      } 
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        localStorage.clear();
+        history.replace('/login');
+      }     
+    }       
   }
 
   useEffect(() => {
